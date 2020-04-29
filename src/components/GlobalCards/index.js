@@ -9,6 +9,10 @@ from 'semantic-ui-react'
 
 class GlobalCards extends Component {
 
+  numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   render() {
 
     let recoverPercentage = ""
@@ -26,11 +30,11 @@ class GlobalCards extends Component {
           <Grid.Row centered width={6}>
             <Statistic.Group>
               <Statistic color='blue' className='statSubBox'>
-                <Statistic.Value>{this.props.globalSummary.confirmed.value}</Statistic.Value>
+                <Statistic.Value>{this.numberWithCommas(this.props.globalSummary.confirmed.value)}</Statistic.Value>
                 <Statistic.Label>Confirmed Cases</Statistic.Label>
               </Statistic>
               <Statistic color='red' className='statSubBox'>
-                <Statistic.Value>{this.props.globalSummary.deaths.value}</Statistic.Value>
+                <Statistic.Value>{this.numberWithCommas(this.props.globalSummary.deaths.value)}</Statistic.Value>
                 <Statistic.Label>Deaths ({deathPercentage})</Statistic.Label>
               </Statistic>
             </Statistic.Group>
@@ -38,7 +42,7 @@ class GlobalCards extends Component {
           <Grid.Row centered width={6}>
             <Statistic.Group>
               <Statistic color='green' className='statSubBox'>
-                <Statistic.Value>{this.props.globalSummary.recovered.value}</Statistic.Value>
+                <Statistic.Value>{this.numberWithCommas(this.props.globalSummary.recovered.value)}</Statistic.Value>
                 <Statistic.Label>Recovered ({recoverPercentage})</Statistic.Label>
               </Statistic>
             </Statistic.Group>
