@@ -1,4 +1,4 @@
-## Covid-19 Tracker
+## COVID-19 Tracker
 
 A web app used to track the stats of the covid-19 virus.
 
