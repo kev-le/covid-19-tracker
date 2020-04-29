@@ -1,11 +1,8 @@
-## Basic React Redux Template
+## COVID-19 Tracker
 
-Used to quickly build React-redux apps with API functionality
+A web app used to track the stats of the covid-19 virus.
 
-Built with:
-* react 16.13
-* react-redux 7.2.0
-* react-router 5.1.2
-* redux 4.0.5
-* connected-react-router 6.8.0
+Built using React & Redux.
+
+Credits to https://github.com/mathdroid/covid-19-api for producing the API.
 
