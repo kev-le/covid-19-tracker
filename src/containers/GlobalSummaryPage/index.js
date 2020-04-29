@@ -60,6 +60,15 @@ class GlobalSummaryPage extends Component {
       ]
     }
 
+    const options = {
+        title: {
+          display: true,
+          text: 'Number of Confirmed Cases since Jan 22',
+          fontSize: 20,
+          fontColor: '#000000'
+      }
+    }
+
     return (
       <div>
         <Divider horizontal>
@@ -71,7 +80,7 @@ class GlobalSummaryPage extends Component {
 
         <GlobalCards/>
         <div className="globalCasesChart">
-          <Line data={data} />
+          <Line data={data} options={options} />
         </div>
       </div>
     )
