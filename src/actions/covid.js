@@ -8,6 +8,10 @@ export const GET_GLOBALDAILY_REQ = 'GET_GLOBALDAILY_REQ'
 export const GET_GLOBALDAILY_SUCCESS  = 'GET_GLOBALDAILY_SUCCESS'
 export const GET_GLOBALDAILY_ERROR = 'GET_GLOBALDAILY_ERROR'
 
+export const GET_COUNTRIES_REQ = 'GET_COUNTRIES_REQ'
+export const GET_COUNTRIES_SUCCESS  = 'GET_COUNTRIES_SUCCESS'
+export const GET_COUNTRIES_ERROR = 'GET_COUNTRIES_ERROR'
+
 // Get the global summary up to current day (cumalative)
 export const getGlobalSummary = () => {
     return dispatch => {
@@ -48,3 +52,22 @@ export const getGlobalDaily = () => {
     }
 }
 
+// Get the iso codes for contries
+export const getCountryCodes = () => {
+    return dispatch => {
+        dispatch({
+            type: GET_COUNTRIES_REQ
+        })
+
+        return axios.get('https://covid19.mathdro.id/api/countries').then(res => {
+            dispatch({
+                type: GET_COUNTRIES_SUCCESS,
+                payload: res.data
+            })
+        }).catch(err => {
+            dispatch({
+                type: GET_COUNTRIES_ERROR
+            })
+        })
+    }
+}

@@ -5,8 +5,11 @@ import {
     GET_GLOBALDAILY_REQ,
     GET_GLOBALSUMMARY_ERROR,
     GET_GLOBALSUMMARY_REQ,
-    GET_GLOBALSUMMARY_SUCCESS
-} from '../actions/covid' 
+    GET_GLOBALSUMMARY_SUCCESS,
+    GET_COUNTRIES_ERROR,
+    GET_COUNTRIES_REQ,
+    GET_COUNTRIES_SUCCESS
+} from '../actions/covid'
 
 const initialStateGlobalDaily = {
     confirmedList: [],
@@ -16,6 +19,11 @@ const initialStateGlobalSummary = {
     confirmed: { value: "0" },
     deaths: { value: "0" },
     recovered: { value: "0" },
+    isLoading: true
+}
+
+const initialStateCountryCodes = {
+    countryList: [],
     isLoading: true
 }
 
@@ -63,7 +71,30 @@ const globalDailyReducer = (state = initialStateGlobalDaily, action) => {
     }
 }
 
+const countryCodesReducer = (state = initialStateCountryCodes, action) => {
+    switch (action.type) {
+        case GET_COUNTRIES_REQ:
+            return {
+                ...state,
+                isLoading: true,
+            }
+        case GET_COUNTRIES_SUCCESS:
+            return {
+                countryList: action.payload.countries,
+                isLoading: false
+            }
+        case GET_COUNTRIES_ERROR:
+            return {
+                ...state,
+                isLoading: false,
+            }
+        default:
+            return state
+    }
+}
+
 export default combineReducers({ 
     globalDaily: globalDailyReducer,
-    globalSummary: globalSummaryReducer
+    globalSummary: globalSummaryReducer,
+    countryCodes: countryCodesReducer
 })

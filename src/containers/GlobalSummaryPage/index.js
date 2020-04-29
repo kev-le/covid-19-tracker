@@ -5,7 +5,7 @@ import { push, goBack } from 'connected-react-router'
 import { getGlobalDaily, getGlobalSummary } from '../../actions/covid'
 import { Divider, Header, Icon } from 'semantic-ui-react'
 import GlobalCards from '../../components/GlobalCards'
-import {Line} from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 
 
 class GlobalSummaryPage extends Component {

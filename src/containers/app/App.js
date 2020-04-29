@@ -3,13 +3,22 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Route } from 'react-router'
 import GlobalSummaryPage from '../GlobalSummaryPage'
+import CountryPage from '../CountryPage'
 import { Menu } from 'semantic-ui-react'
+import { push, goBack } from 'connected-react-router'
 
 class App extends Component {
 
   state = { activeItem : "global"}
 
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+  handleItemClick = (e, { name }) => {
+    this.setState({ activeItem: name })
+    if (name !== "global") {
+      this.props.push('/' + name)
+    } else {
+      this.props.push('/')
+    }
+  }
   
   render() {
 
@@ -23,6 +32,7 @@ class App extends Component {
             name='global'
             active={activeItem === 'global'}
             onClick={this.handleItemClick}
+            to="/"
           >
             Global
           </Menu.Item>
@@ -31,6 +41,7 @@ class App extends Component {
             name='country'
             active={activeItem === 'country'}
             onClick={this.handleItemClick}
+            to='/country'
           >
             By Country
           </Menu.Item>
@@ -46,6 +57,7 @@ class App extends Component {
 
         <main>
           <Route exact path="/" component={GlobalSummaryPage} />
+          <Route exact path="/country" component={CountryPage} />
         </main>
 
       </div>
@@ -55,8 +67,17 @@ class App extends Component {
 
 const mapStateToProps = ({  }) => ({})
 
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      push,
+      goBack
+    },
+    dispatch
+  ) 
+
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(App)

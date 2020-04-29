@@ -37,3 +37,8 @@ code {
   justify-content: center;
   margin-bottom: 20px !important;
 }
+
+.countryDropdown {
+  width: 40% !important;
+  margin: auto;
+}
