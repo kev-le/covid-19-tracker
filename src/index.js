@@ -1,12 +1,10 @@
 import React from 'react';
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { Route } from 'react-router'
 import store, { history } from './store'
 import { ConnectedRouter } from 'connected-react-router'
 import './index.css';
 import App from './containers/app/App';
-import AnotherPage from './containers/AnotherPage'
 import * as serviceWorker from './serviceWorker';
 
 
@@ -15,10 +13,7 @@ const target = document.querySelector('#root')
 render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <div>
-        <Route exact path="/" component={App} />
-        <Route exact path="/another" component={AnotherPage} />
-      </div>
+      <App/>
     </ConnectedRouter>
   </Provider>,
   target
