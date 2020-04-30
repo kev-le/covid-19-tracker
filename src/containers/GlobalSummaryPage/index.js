@@ -3,15 +3,16 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { push, goBack } from 'connected-react-router'
 import { getGlobalDaily, getGlobalSummary } from '../../actions/covid'
-import { Divider, Header, Icon } from 'semantic-ui-react'
+import { Divider, Header, Icon,
+         Dimmer, Loader, Segment } from 'semantic-ui-react'
 import GlobalCards from '../../components/GlobalCards'
 import { Line } from 'react-chartjs-2';
+import Moment from 'react-moment';
 
 
 class GlobalSummaryPage extends Component {
 
   componentDidMount = () => {
-    // only get data if data is empty
     if (this.props.globalSummary.isLoading) {
       this.props.getGlobalSummary()
     }
@@ -78,7 +79,31 @@ class GlobalSummaryPage extends Component {
           </Header>
         </Divider>
 
-        <GlobalCards/>
+        <Header as='h5' textAlign='center'>
+          <p>
+            Last updated:
+            {this.props.globalSummary.lastUpdate && (
+              <Moment format="MMM D YYYY hh:mm:ss" withTitle>
+                {this.props.globalSummary.lastUpdate}
+              </Moment>
+            )}
+          </p>
+        </Header>
+
+        <Segment basic>
+          {this.props.globalSummary.isLoading ? (
+            <Dimmer active inverted >
+              <Loader inverted>Loading</Loader>
+            </Dimmer>
+          ) : <div/>}
+          <GlobalCards 
+            className='statsBox'
+            confirmed={this.props.globalSummary.confirmed.value}
+            recovered={this.props.globalSummary.recovered.value}
+            deaths={this.props.globalSummary.deaths.value}
+          />
+        </Segment>
+
         <div className="globalCasesChart">
           <Line data={data} options={options} />
         </div>

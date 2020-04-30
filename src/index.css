@@ -21,16 +21,24 @@ code {
 
 .statSubBox {
   background-color: white;
-  padding: 10px 10px 10px 10px;
+  padding: 10px;
   border: 1px solid rgb(212,212,213);
   border-radius: 7px;
+  height: 100px;
+  width: auto;
+  margin: 0 5px !important;
 }
 
 .globalCasesChart {
+  border: 1px solid rgb(212,212,213);
+  border-radius: 7px;
+  background-color: white;
   margin: auto;
+  padding: 10px;
   min-width: 400px;
   max-height: 700px;
   max-width: 800px;
+  margin-top: 50px;
 }
 
 .menuBar {
@@ -41,4 +49,32 @@ code {
 .countryDropdown {
   width: 40% !important;
   margin: auto;
+}
+
+.statsBox {
+  display: flex !important;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+.errorMessageCountry {
+  width: 400px;
+  margin: auto !important;
+  margin-top: 20px !important;
+}
+
+.regionTable {
+  max-width: 600px;
+  margin: auto;
+}
+
+@media only screen and (max-width: 750px) {
+  .statsBox {
+    flex-direction: column;
+  }
+  .statSubBox {
+    margin: 10px 5px !important;
+  }
 }

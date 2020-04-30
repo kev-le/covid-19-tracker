@@ -8,18 +8,27 @@ import {
     GET_GLOBALSUMMARY_SUCCESS,
     GET_COUNTRIES_ERROR,
     GET_COUNTRIES_REQ,
-    GET_COUNTRIES_SUCCESS
+    GET_COUNTRIES_SUCCESS,
+    GET_COUNTRY_STATS_ERROR,
+    GET_COUNTRY_STATS_REQ,
+    GET_COUNTRY_STATS_SUCCESS,
+    GET_COUNTRYREGION_ERROR,
+    GET_COUNTRYREGION_REQ,
+    GET_COUNTRYREGION_SUCCESS
 } from '../actions/covid'
 
 const initialStateGlobalDaily = {
     confirmedList: [],
     isLoading: true
 }
-const initialStateGlobalSummary = {
-    confirmed: { value: "0" },
-    deaths: { value: "0" },
-    recovered: { value: "0" },
-    isLoading: true
+const initialStateStats = {
+    confirmed: { value: 0 },
+    deaths: { value: 0 },
+    recovered: { value: 0 },
+    isLoading: true,
+    error: '',
+    countryText: '',
+    lastUpdate: ''
 }
 
 const initialStateCountryCodes = {
@@ -27,7 +36,12 @@ const initialStateCountryCodes = {
     isLoading: true
 }
 
-const globalSummaryReducer = (state = initialStateGlobalSummary, action) => {
+const initialStateCountryRegion = {
+    regionList: [],
+    isLoading: true
+}
+
+const globalSummaryReducer = (state = initialStateStats, action) => {
     switch (action.type) {
         case GET_GLOBALSUMMARY_REQ:
             return {
@@ -93,8 +107,60 @@ const countryCodesReducer = (state = initialStateCountryCodes, action) => {
     }
 }
 
+const countryStatsReducer = (state = initialStateStats, action) => {
+    switch (action.type) {
+        case GET_COUNTRY_STATS_REQ:
+            return {
+                ...state,
+                isLoading: true,
+                error: ''
+            }
+        case GET_COUNTRY_STATS_SUCCESS:
+            return {
+                ...action.payload,
+                isLoading: false,
+                error: ''
+            }
+        case GET_COUNTRY_STATS_ERROR:
+            return {
+                ...initialStateStats,
+                isLoading: false,
+                error: 'Could not find stats for selected country.'
+            }
+        default:
+            return state
+    }
+}
+
+const countryRegionStatsReducer = (state = initialStateCountryRegion, action) => {
+    switch (action.type) {
+        case GET_COUNTRYREGION_REQ:
+            return {
+                ...state,
+                isLoading: true,
+                error: ''
+            }
+        case GET_COUNTRYREGION_SUCCESS:
+            return {
+                regionList : action.payload,
+                isLoading: false,
+                error: ''
+            }
+        case GET_COUNTRYREGION_ERROR:
+            return {
+                ...initialStateCountryRegion,
+                isLoading: false,
+                error: ''
+            }
+        default:
+            return state
+    }
+}
+
 export default combineReducers({ 
     globalDaily: globalDailyReducer,
     globalSummary: globalSummaryReducer,
-    countryCodes: countryCodesReducer
+    countryCodes: countryCodesReducer,
+    countryStats: countryStatsReducer,
+    countryRegion: countryRegionStatsReducer
 })
