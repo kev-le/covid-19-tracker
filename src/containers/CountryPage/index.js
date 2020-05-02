@@ -48,14 +48,11 @@ const tableIcons = {
 
 class CountryPage extends Component {
 
-  state = {
-    countryText: "Canada"
-  }
 
   componentDidMount = () => {
     if (this.props.countryCodes.isLoading || this.props.countryCodes.countryList === undefined) {
       this.props.getCountryCodes()
-      this.props.getCountryStats('ca', this.state.countryText)
+      this.props.getCountryStats('ca', 'Canada') // default value is Canada 'ca'
       this.props.getCountryRegionStats('ca')
     }
   }
@@ -99,9 +96,9 @@ class CountryPage extends Component {
 
 
   handleDropdown = (e, {value}) => {
-    this.props.getCountryStats(value, e.target.textContent)
-    this.props.getCountryRegionStats(value)
-    this.setState({'countryText': e.target.textContent })
+    var isoCode = value
+    this.props.getCountryStats(isoCode, e.target.textContent)
+    this.props.getCountryRegionStats(isoCode)
   }
 
   render() {
@@ -150,7 +147,7 @@ class CountryPage extends Component {
 
         <Dropdown
           className='countryDropdown'
-          defaultValue='ca'
+          value={this.props.countryStats.selectedCountry || 'ca'}
           fluid
           search
           selection

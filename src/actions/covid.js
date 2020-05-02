@@ -16,7 +16,7 @@ export const GET_COUNTRY_STATS_REQ = 'GET_COUNTRY_STATS_REQ'
 export const GET_COUNTRY_STATS_SUCCESS  = 'GET_COUNTRY_STATS_SUCCESS'
 export const GET_COUNTRY_STATS_ERROR = 'GET_COUNTRY_STATS_ERROR'
 
-export const GET_COUNTRYREGION_REQ = 'GET_COUNTRY_STATS_REQ'
+export const GET_COUNTRYREGION_REQ = 'GET_COUNTRYREGION_REQ'
 export const GET_COUNTRYREGION_SUCCESS  = 'GET_COUNTRYREGION_SUCCESS'
 export const GET_COUNTRYREGION_ERROR = 'GET_COUNTRYREGION_ERROR'
 
@@ -91,11 +91,12 @@ export const getCountryStats = (isoCode, countryText) => {
         return axios.get('https://covid19.mathdro.id/api/countries/' + isoCode).then(res => {
             dispatch({
                 type: GET_COUNTRY_STATS_SUCCESS,
-                payload: { ...res.data, countryText: countryText }
+                payload: { ...res.data, countryText: countryText, selectedCountry: isoCode }
             })
         }).catch(err => {
             dispatch({
-                type: GET_COUNTRY_STATS_ERROR
+                type: GET_COUNTRY_STATS_ERROR,
+                payload: { countryText: countryText, selectedCountry: isoCode }
             })
         })
     }

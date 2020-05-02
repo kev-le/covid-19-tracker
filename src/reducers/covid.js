@@ -28,6 +28,7 @@ const initialStateStats = {
     isLoading: true,
     error: '',
     countryText: '',
+    selectedCountry: '',
     lastUpdate: ''
 }
 
@@ -124,7 +125,9 @@ const countryStatsReducer = (state = initialStateStats, action) => {
         case GET_COUNTRY_STATS_ERROR:
             return {
                 ...initialStateStats,
+                ...action.payload,
                 isLoading: false,
+                selectedCountry: action.payload.selectedCountry,
                 error: 'Could not find stats for selected country.'
             }
         default:

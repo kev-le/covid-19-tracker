@@ -8,6 +8,10 @@ body {
   background-color: #EEEEEE;
 }
 
+#root {
+  margin-bottom: 50px;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
