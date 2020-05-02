@@ -74,6 +74,11 @@ code {
   margin: auto;
 }
 
+.globalTable {
+  max-width: 800px;
+  margin: auto;
+}
+
 @media only screen and (max-width: 750px) {
   .statsBox {
     flex-direction: column;

@@ -14,7 +14,10 @@ import {
     GET_COUNTRY_STATS_SUCCESS,
     GET_COUNTRYREGION_ERROR,
     GET_COUNTRYREGION_REQ,
-    GET_COUNTRYREGION_SUCCESS
+    GET_COUNTRYREGION_SUCCESS,
+    GET_ALL_COUNTRY_ERROR,
+    GET_ALL_COUNTRY_REQ,
+    GET_ALL_COUNTRY_SUCCESS
 } from '../actions/covid'
 
 const initialStateGlobalDaily = {
@@ -33,6 +36,11 @@ const initialStateStats = {
 }
 
 const initialStateCountryCodes = {
+    countryList: [],
+    isLoading: true
+}
+
+const initialStateAllCountry = {
     countryList: [],
     isLoading: true
 }
@@ -160,10 +168,36 @@ const countryRegionStatsReducer = (state = initialStateCountryRegion, action) =>
     }
 }
 
+const allCountryReducer = (state = initialStateAllCountry, action) => {
+    switch (action.type) {
+        case GET_ALL_COUNTRY_REQ:
+            return {
+                ...state,
+                isLoading: true,
+                error: ''
+            }
+        case GET_ALL_COUNTRY_SUCCESS:
+            return {
+                countryList : action.payload,
+                isLoading: false,
+                error: ''
+            }
+        case GET_ALL_COUNTRY_ERROR:
+            return {
+                ...initialStateAllCountry,
+                isLoading: false,
+                error: ''
+            }
+        default:
+            return state
+    }
+}
+
 export default combineReducers({ 
     globalDaily: globalDailyReducer,
     globalSummary: globalSummaryReducer,
     countryCodes: countryCodesReducer,
     countryStats: countryStatsReducer,
-    countryRegion: countryRegionStatsReducer
+    countryRegion: countryRegionStatsReducer,
+    allCountry: allCountryReducer
 })

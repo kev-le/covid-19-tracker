@@ -20,6 +20,9 @@ export const GET_COUNTRYREGION_REQ = 'GET_COUNTRYREGION_REQ'
 export const GET_COUNTRYREGION_SUCCESS  = 'GET_COUNTRYREGION_SUCCESS'
 export const GET_COUNTRYREGION_ERROR = 'GET_COUNTRYREGION_ERROR'
 
+export const GET_ALL_COUNTRY_REQ = 'GET_ALL_COUNTRY_REQ'
+export const GET_ALL_COUNTRY_SUCCESS  = 'GET_ALL_COUNTRY_SUCCESS'
+export const GET_ALL_COUNTRY_ERROR = 'GET_ALL_COUNTRY_ERROR'
 
 // Get the global summary up to current day (cumalative)
 export const getGlobalSummary = () => {
@@ -118,6 +121,47 @@ export const getCountryRegionStats = (isoCode) => {
         }).catch(err => {
             dispatch({
                 type: GET_COUNTRYREGION_ERROR
+            })
+        })
+    }
+}
+
+// Get the stats for each country
+export const getAllCountryStats = () => {
+    return dispatch => {
+        dispatch({
+            type: GET_ALL_COUNTRY_REQ
+        })
+
+        return axios.get('https://covid19.mathdro.id/api/confirmed/').then(res => {
+            let compiledCountries = {}
+            let countryList = res.data
+
+            // compile the regions into countries, i.e New York should add onto US count
+            for (var i = 0; i < countryList.length; i++) {
+              if (countryList[i].countryRegion in compiledCountries) {
+                // found existing bucket, add stats onto it
+                
+                compiledCountries[countryList[i].countryRegion].active    += countryList[i].active
+                compiledCountries[countryList[i].countryRegion].recovered += countryList[i].recovered
+                compiledCountries[countryList[i].countryRegion].deaths    += countryList[i].active
+                compiledCountries[countryList[i].countryRegion].confirmed += countryList[i].confirmed
+        
+              } else {
+                // country not found, so add it to dict
+                compiledCountries[countryList[i].countryRegion] = countryList[i]
+              }
+            }
+
+            let data = Object.values(compiledCountries)
+
+            dispatch({
+                type: GET_ALL_COUNTRY_SUCCESS,
+                payload: data
+            })
+        }).catch(err => {
+            dispatch({
+                type: GET_ALL_COUNTRY_ERROR
             })
         })
     }

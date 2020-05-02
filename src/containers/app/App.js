@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Route } from 'react-router'
 import GlobalSummaryPage from '../GlobalSummaryPage'
 import CountryPage from '../CountryPage'
+import GlobalTablePage from '../GlobalTablePage'
 import { Menu } from 'semantic-ui-react'
 import { push, goBack } from 'connected-react-router'
 
@@ -58,6 +59,7 @@ class App extends Component {
         <main>
           <Route exact path="/" component={GlobalSummaryPage} />
           <Route exact path="/country" component={CountryPage} />
+          <Route exact path="/stats" component={GlobalTablePage} />
         </main>
 
       </div>

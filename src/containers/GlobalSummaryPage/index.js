@@ -81,7 +81,7 @@ class GlobalSummaryPage extends Component {
 
         <Header as='h5' textAlign='center'>
           <p>
-            Last updated:
+            Last updated: &nbsp;
             {this.props.globalSummary.lastUpdate && (
               <Moment format="MMM D YYYY hh:mm:ss" withTitle>
                 {this.props.globalSummary.lastUpdate}
