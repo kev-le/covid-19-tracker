@@ -128,9 +128,9 @@ class CountryPage extends Component {
         <Header as='h5' textAlign='center'>
           <p>
             Last updated: &nbsp;
-            {this.props.countryStats.lastUpdate && (
+            {this.props.countryStats.updated && (
               <Moment format="MMM D YYYY hh:mm:ss" withTitle>
-                {this.props.countryStats.lastUpdate}
+                {this.props.countryStats.updated}
               </Moment>
             )}
           </p>
