@@ -82,9 +82,9 @@ class GlobalSummaryPage extends Component {
         <Header as='h5' textAlign='center'>
           <p>
             Last updated: &nbsp;
-            {this.props.globalSummary.lastUpdate && (
+            {this.props.globalSummary.updated && (
               <Moment format="MMM D YYYY hh:mm:ss" withTitle>
-                {this.props.globalSummary.lastUpdate}
+                {this.props.globalSummary.updated}
               </Moment>
             )}
           </p>
@@ -98,9 +98,10 @@ class GlobalSummaryPage extends Component {
           ) : <div/>}
           <GlobalCards 
             className='statsBox'
-            confirmed={this.props.globalSummary.confirmed.value}
-            recovered={this.props.globalSummary.recovered.value}
-            deaths={this.props.globalSummary.deaths.value}
+            yesterday={this.props.globalSummary.yesterday}
+            confirmed={this.props.globalSummary.cases}
+            recovered={this.props.globalSummary.recovered}
+            deaths={this.props.globalSummary.deaths}
           />
         </Segment>
 

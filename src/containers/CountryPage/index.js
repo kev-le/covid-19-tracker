@@ -144,9 +144,11 @@ class CountryPage extends Component {
           ) : <div/>}
           <GlobalCards 
             className='statsBox'
-            confirmed={this.props.countryStats.confirmed.value}
-            recovered={this.props.countryStats.recovered.value}
-            deaths={this.props.countryStats.deaths.value}
+            isLoading={this.props.countryStats.isLoading}
+            yesterday={this.props.countryStats.yesterday}
+            confirmed={this.props.countryStats.cases}
+            recovered={this.props.countryStats.recovered}
+            deaths={this.props.countryStats.deaths}
           />
         </Segment>
 
@@ -157,6 +159,11 @@ class CountryPage extends Component {
           <MaterialTable
             isLoading={this.props.countryRegion.isLoading}
             options={{
+              rowStyle: {
+                height: '50px'
+              },
+              padding: 'dense',
+              sorting: true,
               pageSize: 7,
             }}
             icons={TableIcons}

@@ -28,9 +28,25 @@ code {
   padding: 10px;
   border: 1px solid rgb(212,212,213);
   border-radius: 7px;
-  height: 100px;
+  height: 110px;
   width: auto;
   margin: 0 5px !important;
+}
+
+.statSubBox p {
+  text-align: center;
+}
+
+.red {
+  color: #db2828;
+}
+
+.blue {
+  color: #2185d0;
+}
+
+.green {
+  color: #21ba45;
 }
 
 .globalCasesChart {

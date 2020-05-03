@@ -79,6 +79,10 @@ class GlobalTablePage extends Component {
           <MaterialTable
             isLoading={this.props.allCountry.isLoading}
             options={{
+              rowStyle: {
+                height: '50px'
+              },
+              padding: 'dense',
               sorting: true,
               pageSize: 7,
             }}
