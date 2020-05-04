@@ -86,7 +86,7 @@ class GlobalCards extends Component {
                 >
                   {({ countUpRef }) => (
                     <div>
-                      +<span ref={countUpRef} />
+                      +<span ref={countUpRef}/> Today
                     </div>
                   )}
                 </CountUp>
@@ -105,7 +105,7 @@ class GlobalCards extends Component {
               >
                 {({ countUpRef }) => (
                   <div>
-                    <span ref={countUpRef} />
+                    <span ref={countUpRef}/>
                   </div>
                 )}
               </CountUp>
@@ -124,7 +124,7 @@ class GlobalCards extends Component {
                 >
                   {({ countUpRef }) => (
                     <div>
-                      +<span ref={countUpRef} />
+                      +<span ref={countUpRef}/> Today
                     </div>
                   )}
                 </CountUp>
@@ -163,7 +163,7 @@ class GlobalCards extends Component {
                 >
                   {({ countUpRef }) => (
                     <div>
-                      +<span ref={countUpRef} />
+                      +<span ref={countUpRef}/> Today
                     </div>
                   )}
                 </CountUp>
