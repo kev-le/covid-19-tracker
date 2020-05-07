@@ -1,9 +1,10 @@
-import React, {Component, Button} from 'react';
+import React, {Component } from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { getCountryCodes, getCountryStats, getCountryRegionStats } from '../../actions/covid'
 import { Divider, Header, Icon, Dropdown,
          Dimmer, Loader, Segment, Message } from 'semantic-ui-react'
+import { Paper } from '@material-ui/core'
 import GlobalCards from '../../components/GlobalCards'
 import Moment from 'react-moment';
 import MaterialTable from "material-table";
@@ -155,7 +156,8 @@ class CountryPage extends Component {
         {this.props.countryRegion.regionList.length === 1 && (
           <Header color='red' as='h5' textAlign='center'>No region stats available for this country</Header>
         )}
-        <div className='regionTable'>
+
+        <Paper className='regionTable'>
           <MaterialTable
             isLoading={this.props.countryRegion.isLoading}
             options={{
@@ -177,7 +179,7 @@ class CountryPage extends Component {
             data={ tableData }
             title={"Region Stats for " + this.props.countryStats.countryText}
           />
-        </div>
+        </Paper>
       </div>
     )
   }

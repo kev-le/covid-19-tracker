@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { getAllCountryStats } from '../../actions/covid'
 import { Divider, Header, Icon, Flag } from 'semantic-ui-react'
+import { Paper } from '@material-ui/core';
 import Moment from 'react-moment';
 import MaterialTable from "material-table";
 import TableIcons from '../../components/TableIcons'
@@ -42,7 +43,7 @@ class GlobalTablePage extends Component {
 
 
       var countryList = this.props.allCountry.countryList
-      lastUpdated = countryList[0].lastUpdate
+      lastUpdated = countryList[0].updated
 
       // clean the data
       for (var i = 0; i < countryList.length; i++) {
@@ -75,7 +76,8 @@ class GlobalTablePage extends Component {
           </p>
         </Header>
 
-        <div className='globalTable'>
+        
+        <Paper className='globalTable'>
           <MaterialTable
             isLoading={this.props.allCountry.isLoading}
             options={{
@@ -100,7 +102,7 @@ class GlobalTablePage extends Component {
             data={ tableData }
             title={"Global Country Stats"}
           />
-        </div>
+        </Paper>
       </div>
     )
   }

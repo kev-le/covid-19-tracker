@@ -5,6 +5,7 @@ import { push, goBack } from 'connected-react-router'
 import { getGlobalDaily, getGlobalSummary } from '../../actions/covid'
 import { Divider, Header, Icon,
          Dimmer, Loader, Segment } from 'semantic-ui-react'
+import { Paper } from '@material-ui/core'
 import GlobalCards from '../../components/GlobalCards'
 import { Line } from 'react-chartjs-2';
 import Moment from 'react-moment';
@@ -105,9 +106,9 @@ class GlobalSummaryPage extends Component {
           />
         </Segment>
 
-        <div className="globalCasesChart">
+        <Paper className="globalCasesChart">
           <Line data={data} options={options} />
-        </div>
+        </Paper>
       </div>
     )
   }
