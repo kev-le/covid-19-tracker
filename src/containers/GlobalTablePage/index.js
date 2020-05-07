@@ -18,14 +18,14 @@ class GlobalTablePage extends Component {
 
 
   getCountryObject = (country) => {
-    if (country.iso2 === null || country.iso3 === null || country.iso2 === undefined || country.iso3 === undefined) {
-      country.iso2 = ''
+    if (country.countryInfo.iso2 === null || country.countryInfo.iso2 === undefined) {
+      country.countryInfo.iso2 = ''
     }
 
     return {
-      iso : country.iso2.toLowerCase(),
-      country : country.countryRegion,
-      confirmed : country.confirmed,
+      iso : country.countryInfo.iso2.toLowerCase(),
+      country : country.country,
+      cases : country.cases,
       active : country.active,
       recovered : country.recovered,
       deaths : country.deaths
@@ -92,7 +92,7 @@ class GlobalTablePage extends Component {
                 title: "Country", field: "country", render: rowData => 
                 <p><Flag name={rowData.iso} /> {rowData.country}</p>
               },
-              { title: "Total Cases", field: "confirmed", defaultSort: "desc" },
+              { title: "Total Cases", field: "cases", defaultSort: "desc" },
               { title: "Active", field: "active" },
               { title: "Recovered", field: "recovered" },
               { title: "Deaths", field: "deaths" }
