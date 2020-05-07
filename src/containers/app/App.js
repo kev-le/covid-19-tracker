@@ -7,13 +7,20 @@ import CountryPage from '../CountryPage'
 import GlobalTablePage from '../GlobalTablePage'
 import { Menu } from 'semantic-ui-react'
 import { push, goBack } from 'connected-react-router'
+import { updateNavbar } from '../../actions/global'
 
 class App extends Component {
 
-  state = { activeItem : "global"}
+  componentDidMount = () => {
+    let pathname = this.props.router.pathname
+    if (pathname !== undefined || pathname.length > 1) {
+      // on refresh, update navbar to correct item based on pathname
+      this.props.updateNavbar(pathname.slice(1))
+    }
+  }
 
   handleItemClick = (e, { name }) => {
-    this.setState({ activeItem: name })
+    this.props.updateNavbar(name)
     if (name !== "global") {
       this.props.push('/' + name)
     } else {
@@ -23,15 +30,13 @@ class App extends Component {
   
   render() {
 
-    const { activeItem } = this.state
-
     return (
       <div>
         <h1 className="title">COVID-19 Tracker</h1>
         <Menu className='menuBar' secondary>
           <Menu.Item
             name='global'
-            active={activeItem === 'global'}
+            active={this.props.navbar.selected === '' || this.props.navbar.selected === 'global'}
             onClick={this.handleItemClick}
             to="/"
           >
@@ -40,7 +45,7 @@ class App extends Component {
 
           <Menu.Item
             name='country'
-            active={activeItem === 'country'}
+            active={this.props.navbar.selected === 'country'}
             onClick={this.handleItemClick}
             to='/country'
           >
@@ -49,7 +54,7 @@ class App extends Component {
 
           <Menu.Item
             name='stats'
-            active={activeItem === 'stats'}
+            active={this.props.navbar.selected === 'stats'}
             onClick={this.handleItemClick}
           >
             All Stats
@@ -67,13 +72,17 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = ({  }) => ({})
+const mapStateToProps = ({ router, global }) => ({
+  router: router.location,
+  navbar: global.navbar
+})
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       push,
-      goBack
+      goBack,
+      updateNavbar
     },
     dispatch
   ) 

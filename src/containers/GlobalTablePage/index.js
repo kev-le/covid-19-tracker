@@ -11,18 +11,10 @@ import TableIcons from '../../components/TableIcons'
 
 class GlobalTablePage extends Component {
 
-  state = {
-    activeItem: 'cards'
-  }
-
   componentDidMount = () => {
     if (this.props.allCountry.isLoading || this.props.allCountry.countryList === undefined || this.props.allCountry.countryList.length === 0) {
       this.props.getAllCountryStats()
     }
-  }
-
-  handleItemClick = (e, { name }) => {
-    this.setState({ activeItem: name })
   }
 
 
@@ -64,9 +56,6 @@ class GlobalTablePage extends Component {
         tableData.push(this.getCountryObject(countryList[i]))
       }
     }
-
-    const { activeItem } = this.state
-
     return (
       <div>
         <Divider horizontal>
