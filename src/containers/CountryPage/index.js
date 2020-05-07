@@ -130,7 +130,7 @@ class CountryPage extends Component {
           <p>
             Last updated: &nbsp;
             {this.props.countryStats.updated && (
-              <Moment format="MMM D YYYY hh:mm:ss" withTitle>
+              <Moment fromNow>
                 {this.props.countryStats.updated}
               </Moment>
             )}

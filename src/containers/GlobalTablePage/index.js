@@ -2,7 +2,7 @@ import React, {Component, Button} from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { getAllCountryStats } from '../../actions/covid'
-import { Divider, Header, Icon, Flag } from 'semantic-ui-react'
+import { Divider, Header, Icon, Flag, Menu } from 'semantic-ui-react'
 import { Paper } from '@material-ui/core';
 import Moment from 'react-moment';
 import MaterialTable from "material-table";
@@ -11,10 +11,18 @@ import TableIcons from '../../components/TableIcons'
 
 class GlobalTablePage extends Component {
 
+  state = {
+    activeItem: 'cards'
+  }
+
   componentDidMount = () => {
     if (this.props.allCountry.isLoading || this.props.allCountry.countryList === undefined || this.props.allCountry.countryList.length === 0) {
       this.props.getAllCountryStats()
     }
+  }
+
+  handleItemClick = (e, { name }) => {
+    this.setState({ activeItem: name })
   }
 
 
@@ -56,6 +64,9 @@ class GlobalTablePage extends Component {
         tableData.push(this.getCountryObject(countryList[i]))
       }
     }
+
+    const { activeItem } = this.state
+
     return (
       <div>
         <Divider horizontal>
@@ -65,11 +76,29 @@ class GlobalTablePage extends Component {
           </Header>
         </Divider>
 
+        <Menu className='menuBar' secondary>
+          <Menu.Item
+            name='cards'
+            active={activeItem === 'cards'}
+            onClick={this.handleItemClick}
+          >
+            Card View
+          </Menu.Item>
+
+          <Menu.Item
+            name='table'
+            active={activeItem === 'table'}
+            onClick={this.handleItemClick}
+          >
+            Table View
+          </Menu.Item>
+        </Menu>
+
         <Header as='h5' textAlign='center'>
           <p>
             Last updated: &nbsp;
             {lastUpdated && (
-              <Moment format="MMM D YYYY hh:mm:ss" withTitle>
+              <Moment fromNow>
                 {lastUpdated}
               </Moment>
             )}

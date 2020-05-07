@@ -84,7 +84,7 @@ class GlobalSummaryPage extends Component {
           <p>
             Last updated: &nbsp;
             {this.props.globalSummary.updated && (
-              <Moment format="MMM D YYYY hh:mm:ss" withTitle>
+              <Moment fromNow>
                 {this.props.globalSummary.updated}
               </Moment>
             )}
