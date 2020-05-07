@@ -2,11 +2,13 @@ import React, {Component, Button} from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { getAllCountryStats } from '../../actions/covid'
+import { updateTablePage } from '../../actions/global'
 import { Divider, Header, Icon, Flag, Menu } from 'semantic-ui-react'
 import { Paper } from '@material-ui/core';
 import Moment from 'react-moment';
 import MaterialTable from "material-table";
 import TableIcons from '../../components/TableIcons'
+import CountryCard from '../../components/CountryCard';
 
 
 class GlobalTablePage extends Component {
@@ -17,13 +19,22 @@ class GlobalTablePage extends Component {
     }
   }
 
+  handleItemClick = (e, { name }) => {
+    this.props.updateTablePage(name)
+  }
+
 
   getCountryObject = (country) => {
     if (country.countryInfo.iso2 === null || country.countryInfo.iso2 === undefined) {
       country.countryInfo.iso2 = ''
     }
 
+    if (country.countryInfo.flag === null || country.countryInfo.flag === undefined) {
+      country.countryInfo.flag = ''
+    }
+
     return {
+      flag : country.countryInfo.flag,
       iso : country.countryInfo.iso2.toLowerCase(),
       country : country.country,
       cases : country.cases,
@@ -55,7 +66,12 @@ class GlobalTablePage extends Component {
         }
         tableData.push(this.getCountryObject(countryList[i]))
       }
+      
+      // sort by total cases
+      tableData.sort( (a,b) => { return b.cases - a.cases })
     }
+
+    let selected = this.props.tablePage.selected
     return (
       <div>
         <Divider horizontal>
@@ -68,7 +84,7 @@ class GlobalTablePage extends Component {
         <Menu className='menuBar' secondary>
           <Menu.Item
             name='cards'
-            active={activeItem === 'cards'}
+            active={selected === 'cards'}
             onClick={this.handleItemClick}
           >
             Card View
@@ -76,7 +92,7 @@ class GlobalTablePage extends Component {
 
           <Menu.Item
             name='table'
-            active={activeItem === 'table'}
+            active={selected === 'table'}
             onClick={this.handleItemClick}
           >
             Table View
@@ -95,45 +111,56 @@ class GlobalTablePage extends Component {
         </Header>
 
         
-        <Paper className='globalTable'>
-          <MaterialTable
-            isLoading={this.props.allCountry.isLoading}
-            options={{
-              rowStyle: {
-                height: '50px'
-              },
-              padding: 'dense',
-              sorting: true,
-              pageSize: 7,
-            }}
-            icons={TableIcons}
-            columns={[
-              { 
-                title: "Country", field: "country", render: rowData => 
-                <p><Flag name={rowData.iso} /> {rowData.country}</p>
-              },
-              { title: "Total Cases", field: "cases", defaultSort: "desc" },
-              { title: "Active", field: "active" },
-              { title: "Recovered", field: "recovered" },
-              { title: "Deaths", field: "deaths" }
-            ]}
-            data={ tableData }
-            title={"Global Country Stats"}
-          />
-        </Paper>
+        {selected === 'table' ? (
+          <Paper className='globalTable'>
+            <MaterialTable
+              isLoading={this.props.allCountry.isLoading}
+              options={{
+                rowStyle: {
+                  height: '50px'
+                },
+                padding: 'dense',
+                sorting: true,
+                pageSize: 7,
+              }}
+              icons={TableIcons}
+              columns={[
+                { 
+                  title: "Country", field: "country", render: rowData => 
+                  <p><Flag name={rowData.iso} /> {rowData.country}</p>
+                },
+                { title: "Total Cases", field: "cases", defaultSort: "desc" },
+                { title: "Active", field: "active" },
+                { title: "Recovered", field: "recovered" },
+                { title: "Deaths", field: "deaths" }
+              ]}
+              data={ tableData }
+              title={"Global Country Stats"}
+            />
+          </Paper>
+        ) : (
+          <div className='countryCardList'>
+            {tableData.map(country => {
+              return <CountryCard country={country}></CountryCard>
+            })}
+            
+          </div>
+        )}
       </div>
     )
   }
 }
   
-const mapStateToProps = ({ covid }) => ({
+const mapStateToProps = ({ global, covid }) => ({
+  tablePage: global.tablePage,
   allCountry: covid.allCountry
 })
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      getAllCountryStats
+      getAllCountryStats,
+      updateTablePage
     },
     dispatch
   )

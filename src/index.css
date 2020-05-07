@@ -95,6 +95,21 @@ code {
   margin: auto;
 }
 
+.countryCard {
+  width: 275px;
+  height: 150px;
+  margin: 5px;
+}
+
+.countryCardList {
+  max-width: 1300px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 @media only screen and (max-width: 750px) {
   .statsBox {
     flex-direction: column;

@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Statistic } from 'semantic-ui-react'
-import { Paper } from '@material-ui/core';
-import CountUp from 'react-countup';
+import { Image, Divider } from 'semantic-ui-react'
+import { Card, CardContent, Typography } from '@material-ui/core'
+import CountUp from 'react-countup'
 
 
 class CountryCard extends Component {
@@ -10,26 +10,26 @@ class CountryCard extends Component {
 
   render() {
 
+    if (this.props.country === undefined || this.props.country == null) {
+      return <div></div>
+    }
+    
     return (
-      <Paper>
-        <Statistic color='blue' >
-          <Statistic.Value>
-            <CountUp
-              start={0}
-              end={3213}
-              duration={1}
-              separator=','
-              delay={0}
-            >
-              {({ countUpRef }) => (
-                <div>
-                  <span ref={countUpRef} />
-                </div>
-              )}
-            </CountUp>
-          </Statistic.Value>
-        </Statistic>
-      </Paper>
+      <Card className='countryCard' variant="outlined">
+        <CardContent>
+          <Typography variant="subtitle1" component="h2">
+            <Image src={this.props.country.flag} size='mini' inline />&nbsp; &nbsp;{this.props.country.country}
+          </Typography>
+          <Divider/>
+          <Typography variant="body2" component="p">
+            Total Cases: <b className='blue'>{this.props.country.cases}</b>
+            <br/>
+            Recovered: <b className='green'>{this.props.country.recovered}</b>
+            <br/>
+            Deaths: <b className='red'>{this.props.country.deaths}</b>
+          </Typography>
+        </CardContent>
+      </Card>
     )
   }
 }
