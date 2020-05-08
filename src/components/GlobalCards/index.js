@@ -73,24 +73,20 @@ class GlobalCards extends Component {
 
             <Statistic.Label>Confirmed Cases</Statistic.Label>
             {this.shouldLoadLabel(yesterdayCases) &&
-              <p className='blue'>
-                <b>
-                    <CountUp
-                    start={0}
-                    end={yesterdayCases}
-                    duration={1}
-                    separator=','
-                    delay={0}
-                    useEasing={true}
-                  >
-                    {({ countUpRef }) => (
-                      <div>
-                        +<span ref={countUpRef}/> Today
-                      </div>
-                    )}
-                  </CountUp>
-                </b>
-              </p>
+              <CountUp
+                start={0}
+                end={yesterdayCases}
+                duration={1}
+                separator=','
+                delay={0}
+                useEasing={true}
+              >
+                {({ countUpRef }) => (
+                  <p className='blue'>
+                    <b>+<span ref={countUpRef}/> Today </b>
+                  </p>
+                )}
+              </CountUp>
             }
           </Statistic>
         </Paper>
@@ -114,24 +110,20 @@ class GlobalCards extends Component {
             </Statistic.Value>
             <Statistic.Label>Deaths {deathPercentage}</Statistic.Label>
             {this.shouldLoadLabel(yesterdayDeaths) &&
-              <p className='red'>
-                <b>
-                    <CountUp
-                    start={0}
-                    end={yesterdayDeaths}
-                    duration={1}
-                    separator=','
-                    delay={0}
-                    useEasing={true}
-                  >
-                    {({ countUpRef }) => (
-                      <div>
-                        +<span ref={countUpRef}/> Today
-                      </div>
-                    )}
-                  </CountUp>
-                </b>
-              </p>
+              <CountUp
+                start={0}
+                end={yesterdayDeaths}
+                duration={1}
+                separator=','
+                delay={0}
+                useEasing={true}
+              >
+                {({ countUpRef }) => (
+                  <p className='red'>
+                    <b>+<span ref={countUpRef}/> Today </b>
+                  </p>
+                )}
+              </CountUp>
             }
           </Statistic>
         </Paper>
@@ -156,24 +148,20 @@ class GlobalCards extends Component {
             </Statistic.Value>
             <Statistic.Label>Recovered {recoverPercentage}</Statistic.Label>
             {this.shouldLoadLabel(yesterdayRecovered) &&
-              <p className='green'>
-                <b>
-                    <CountUp
-                    start={0}
-                    end={yesterdayRecovered}
-                    duration={1}
-                    separator=','
-                    delay={0}
-                    useEasing={true}
-                  >
-                    {({ countUpRef }) => (
-                      <div>
-                        +<span ref={countUpRef}/> Today
-                      </div>
-                    )}
-                  </CountUp>
-                </b>
-              </p>
+              <CountUp
+                start={0}
+                end={yesterdayRecovered}
+                duration={1}
+                separator=','
+                delay={0}
+                useEasing={true}
+              >
+                {({ countUpRef }) => (
+                  <p className='green'>
+                    <b>+<span ref={countUpRef}/> Today </b>
+                  </p>
+                )}
+              </CountUp>
             }
           </Statistic>
         </Paper>
