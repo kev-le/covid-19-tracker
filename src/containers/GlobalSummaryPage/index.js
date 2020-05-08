@@ -54,7 +54,7 @@ class GlobalSummaryPage extends Component {
           pointHoverRadius: 5,
           pointHoverBorderWidth: 2,
           pointRadius: 1,
-          pointHitRadius: 30,
+          pointHitRadius: 15,
           data: cases
         },
         {
@@ -75,7 +75,7 @@ class GlobalSummaryPage extends Component {
           pointHoverBorderColor: 'rgba(220,220,220,1)',
           pointHoverBorderWidth: 2,
           pointRadius: 1,
-          pointHitRadius: 30,
+          pointHitRadius: 15,
           data: recovered
         },
         {
@@ -96,7 +96,7 @@ class GlobalSummaryPage extends Component {
           pointHoverBorderColor: 'rgba(220,220,220,1)',
           pointHoverBorderWidth: 2,
           pointRadius: 1,
-          pointHitRadius: 30,
+          pointHitRadius: 15,
           data: deaths
         }
       ]
@@ -168,7 +168,6 @@ class GlobalSummaryPage extends Component {
               </Dimmer>
               <Line data={dummyData} options={options} />
             </Segment>
-              
           ): (
             <Line data={data} options={options} />
           )}
