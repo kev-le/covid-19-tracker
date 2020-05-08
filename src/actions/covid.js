@@ -68,10 +68,17 @@ export const getGlobalDaily = () => {
             type: GET_GLOBALDAILY_REQ
         })
 
-        return axios.get('https://covid19.mathdro.id/api/daily').then(res => {
+        return axios.get('https://disease.sh/v2/historical/all?lastdays=all').then(res => {
+            let data = res.data
+
+            let dates = Object.keys(data.cases)
+            let cases = Object.values(data.cases)
+            let recovered = Object.values(data.recovered)
+            let deaths = Object.values(data.deaths)
+
             dispatch({
                 type: GET_GLOBALDAILY_SUCCESS,
-                payload: res.data
+                payload: { dates, cases, recovered, deaths }
             })
         }).catch(err => {
             dispatch({
