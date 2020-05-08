@@ -25,7 +25,10 @@ import {
 } from '../actions/covid'
 
 const initialStateGlobalDaily = {
-    confirmedList: [],
+    dates: [],
+    cases: [],
+    recovered: [],
+    deaths: [],
     isLoading: true
 }
 
@@ -106,7 +109,7 @@ const globalDailyReducer = (state = initialStateGlobalDaily, action) => {
             }
         case GET_GLOBALDAILY_SUCCESS:
             return {
-                confirmedList: action.payload,
+                ...action.payload,
                 isLoading: false
             }
         case GET_GLOBALDAILY_ERROR:

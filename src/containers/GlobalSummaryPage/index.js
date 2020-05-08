@@ -24,15 +24,15 @@ class GlobalSummaryPage extends Component {
   }
 
   render() {
-    let dateLabels = ['2020-04-01', '2020-04-02', '2020-04-03', '2020-04-04', '2020-04-05']
-    let casesData = []
+    let dateLabels = []
+    let cases = []
+    let recovered = []
+    let deaths = []
     if (this.props.globalDaily.isLoading === false) {
-      var list = this.props.globalDaily.confirmedList
-      dateLabels = []
-      for (var i = 0; i < list.length; i++) {
-        dateLabels.push(list[i]['reportDate'])
-        casesData.push(list[i]['totalConfirmed'])
-      }
+      dateLabels = this.props.globalDaily.dates
+      cases = this.props.globalDaily.cases
+      recovered = this.props.globalDaily.recovered
+      deaths = this.props.globalDaily.deaths
     }
 
     const data = {
@@ -40,7 +40,7 @@ class GlobalSummaryPage extends Component {
       datasets: [
         {
           label: 'Confirmed Cases',
-          fill: 'origin',
+          fill: '+1',
           lineTension: 0.1,
           backgroundColor: 'rgba(75,192,192,0.4)',
           borderColor: 'rgba(75,192,192,1)',
@@ -52,14 +52,59 @@ class GlobalSummaryPage extends Component {
           pointBackgroundColor: '#fff',
           pointBorderWidth: 1,
           pointHoverRadius: 5,
-          pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 30,
+          data: cases
+        },
+        {
+          label: 'Recoveries',
+          fill: '+1',
+          lineTension: 0.1,
+          backgroundColor: 'rgba(50,205,50,0.4)',
+          borderColor: 'rgba(50,205,50,1)',
+          borderCapStyle: 'butt',
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: 'miter',
+          pointBorderColor: 'rgba(50,205,50,1)',
+          pointBackgroundColor: '#fff',
+          pointBorderWidth: 1,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: 'rgba(50,205,50,1)',
           pointHoverBorderColor: 'rgba(220,220,220,1)',
           pointHoverBorderWidth: 2,
           pointRadius: 1,
           pointHitRadius: 30,
-          data: casesData
+          data: recovered
+        },
+        {
+          label: 'Deaths',
+          fill: 'origin',
+          lineTension: 0.1,
+          backgroundColor: 'rgba(220,20,60,0.4)',
+          borderColor: 'rgba(220,20,60,1)',
+          borderCapStyle: 'butt',
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: 'miter',
+          pointBorderColor: 'rgba(220,20,60,1)',
+          pointBackgroundColor: '#fff',
+          pointBorderWidth: 1,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: 'rgba(220,20,60,1)',
+          pointHoverBorderColor: 'rgba(220,220,220,1)',
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 30,
+          data: deaths
         }
       ]
+    }
+
+    // used to show empty chart while data loads
+    const dummyData = {
+      datasets: [{label:'', data: [0,5000,5000,4500000]}]
     }
 
     const options = {
@@ -68,7 +113,16 @@ class GlobalSummaryPage extends Component {
           text: 'Number of Confirmed Cases since Jan 22',
           fontSize: 20,
           fontColor: '#000000'
-      }
+        },
+        responsive: true,
+        animation: {
+          duration: 1500,
+          easing: 'easeOutQuart'
+        },
+        tooltips: {
+          // Overrides the global setting
+          mode: 'label'
+        }
     }
 
     return (
@@ -92,11 +146,11 @@ class GlobalSummaryPage extends Component {
         </Header>
 
         <Segment basic>
-          {this.props.globalSummary.isLoading ? (
+          {this.props.globalSummary.isLoading && 
             <Dimmer active inverted >
               <Loader inverted>Loading</Loader>
             </Dimmer>
-          ) : <div/>}
+          }
           <GlobalCards 
             className='statsBox'
             yesterday={this.props.globalSummary.yesterday}
@@ -107,7 +161,18 @@ class GlobalSummaryPage extends Component {
         </Segment>
 
         <Paper className="globalCasesChart">
-          <Line data={data} options={options} />
+          {this.props.globalDaily.isLoading ? (
+            <Segment>
+              <Dimmer active inverted >
+                <Loader inverted>Loading</Loader>
+              </Dimmer>
+              <Line data={dummyData} options={options} />
+            </Segment>
+              
+          ): (
+            <Line data={data} options={options} />
+          )}
+          
         </Paper>
       </div>
     )

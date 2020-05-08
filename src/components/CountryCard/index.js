@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Image, Divider } from 'semantic-ui-react'
 import { Card, CardContent, Typography } from '@material-ui/core'
-import CountUp from 'react-countup'
 
 
 class CountryCard extends Component {
@@ -13,7 +12,7 @@ class CountryCard extends Component {
     if (this.props.country === undefined || this.props.country == null) {
       return <div></div>
     }
-    
+
     return (
       <Card className='countryCard' variant="outlined">
         <CardContent>
