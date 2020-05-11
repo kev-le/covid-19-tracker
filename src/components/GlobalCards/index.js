@@ -7,10 +7,6 @@ import CountUp from 'react-countup';
 
 class GlobalCards extends Component {
 
-  numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
-
   shouldLoadLabel(cases) {
     if (cases !== 0) {
       return true

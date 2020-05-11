@@ -6,6 +6,9 @@ import { Card, CardContent, Typography } from '@material-ui/core'
 
 class CountryCard extends Component {
 
+  numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
   render() {
 
@@ -21,11 +24,11 @@ class CountryCard extends Component {
           </Typography>
           <Divider/>
           <Typography variant="body2" component="p">
-            Total Cases: <b className='blue'>{this.props.country.cases}</b>
+            Total Cases: <b className='blue'>{this.numberWithCommas(this.props.country.cases)}</b>
             <br/>
-            Recovered: <b className='green'>{this.props.country.recovered}</b>
+            Recovered: <b className='green'>{this.numberWithCommas(this.props.country.recovered)}</b>
             <br/>
-            Deaths: <b className='red'>{this.props.country.deaths}</b>
+            Deaths: <b className='red'>{this.numberWithCommas(this.props.country.deaths)}</b>
           </Typography>
         </CardContent>
       </Card>
