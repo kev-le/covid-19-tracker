@@ -1,10 +1,13 @@
 import React, {Component } from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { getCountryCodes, getCountryStats, getCountryRegionStats } from '../../actions/covid'
+import { getCountryCodes, getCountryStats, getCountryRegionStats, getCountryHistory } from '../../actions/covid'
+import { updateCountryNavOption } from '../../actions/global'
 import { Divider, Header, Icon, Dropdown,
-         Dimmer, Loader, Segment, Message } from 'semantic-ui-react'
+         Dimmer, Loader, Segment, Message,
+         Menu } from 'semantic-ui-react'
 import { Paper } from '@material-ui/core'
+import { Line } from 'react-chartjs-2';
 import GlobalCards from '../../components/GlobalCards'
 import Moment from 'react-moment';
 import MaterialTable from "material-table";
@@ -18,6 +21,10 @@ class CountryPage extends Component {
       this.props.getCountryCodes()
       this.props.getCountryStats('ca', 'Canada') // default value is Canada 'ca'
       this.props.getCountryRegionStats('ca')
+    }
+
+    if (this.props.countryHistory.isLoading || this.props.countryHistory.cases === undefined || this.props.countryHistory.cases.length === 0) {
+      this.props.getCountryHistory('ca')
     }
   }
 
@@ -63,6 +70,11 @@ class CountryPage extends Component {
     var isoCode = value
     this.props.getCountryStats(isoCode, e.target.textContent)
     this.props.getCountryRegionStats(isoCode)
+    this.props.getCountryHistory(isoCode)
+  }
+
+  handleItemClick = (e, {name}) => {
+    this.props.updateCountryNavOption(name)
   }
 
   render() {
@@ -100,6 +112,103 @@ class CountryPage extends Component {
         tableData = []
       }
     }
+
+    let cases = this.props.countryHistory.cases
+    let recovered = this.props.countryHistory.recovered
+    let deaths = this.props.countryHistory.deaths
+    let dateLabels = this.props.countryHistory.dates
+
+    const data = {
+      labels: dateLabels,
+      datasets: [
+        {
+          label: 'Confirmed Cases',
+          fill: '+1',
+          lineTension: 0.1,
+          backgroundColor: 'rgba(75,192,192,0.4)',
+          borderColor: 'rgba(75,192,192,1)',
+          borderCapStyle: 'butt',
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: 'miter',
+          pointBorderColor: 'rgba(75,192,192,1)',
+          pointBackgroundColor: '#fff',
+          pointBorderWidth: 1,
+          pointHoverRadius: 5,
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 15,
+          data: cases
+        },
+        {
+          label: 'Recoveries',
+          fill: '+1',
+          lineTension: 0.1,
+          backgroundColor: 'rgba(50,205,50,0.4)',
+          borderColor: 'rgba(50,205,50,1)',
+          borderCapStyle: 'butt',
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: 'miter',
+          pointBorderColor: 'rgba(50,205,50,1)',
+          pointBackgroundColor: '#fff',
+          pointBorderWidth: 1,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: 'rgba(50,205,50,1)',
+          pointHoverBorderColor: 'rgba(220,220,220,1)',
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 15,
+          data: recovered
+        },
+        {
+          label: 'Deaths',
+          fill: 'origin',
+          lineTension: 0.1,
+          backgroundColor: 'rgba(220,20,60,0.4)',
+          borderColor: 'rgba(220,20,60,1)',
+          borderCapStyle: 'butt',
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: 'miter',
+          pointBorderColor: 'rgba(220,20,60,1)',
+          pointBackgroundColor: '#fff',
+          pointBorderWidth: 1,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: 'rgba(220,20,60,1)',
+          pointHoverBorderColor: 'rgba(220,220,220,1)',
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 15,
+          data: deaths
+        }
+      ]
+    }
+
+    // used to show empty chart while data loads
+    const dummyData = {
+      datasets: [{label:'', data: [0,100,5000,50000]}]
+    }
+
+    const options = {
+        title: {
+          display: true,
+          text: this.props.countryStats.countryText + ' - Cases, Recoveries, and Deaths Since Jan 2020' ,
+          fontSize: 20,
+          fontColor: '#000000'
+        },
+        responsive: true,
+        animation: {
+          duration: 1500,
+          easing: 'easeOutQuart'
+        },
+        tooltips: {
+          // Overrides the global setting
+          mode: 'label'
+        }
+    }
+
+    let selected = this.props.countryNav.selected
     return (
       <div>
         <Divider horizontal>
@@ -153,42 +262,86 @@ class CountryPage extends Component {
           />
         </Segment>
 
-        {this.props.countryRegion.regionList.length === 1 && (
-          <Header color='red' as='h5' textAlign='center'>No region stats available for this country</Header>
-        )}
+        <Menu className='menuBar' secondary>
+          <Menu.Item
+            name='region'
+            active={selected === 'region'}
+            onClick={this.handleItemClick}
+          >
+            Region Chart
+          </Menu.Item>
 
-        <Paper className='regionTable'>
-          <MaterialTable
-            isLoading={this.props.countryRegion.isLoading}
-            options={{
-              rowStyle: {
-                height: '50px'
-              },
-              padding: 'dense',
-              sorting: true,
-              pageSize: 7,
-            }}
-            icons={TableIcons}
-            columns={[
-              { title: "Province/State", field: "provinceState" },
-              { title: "Total Cases", field: "confirmed" },
-              { title: "Active", field: "active" },
-              { title: "Recovered", field: "recovered" },
-              { title: "Deaths", field: "deaths" }
-            ]}
-            data={ tableData }
-            title={"Region Stats for " + this.props.countryStats.countryText}
-          />
-        </Paper>
+          <Menu.Item
+            name='graph'
+            active={selected === 'graph'}
+            onClick={this.handleItemClick}
+          >
+            Graph View
+          </Menu.Item>
+        </Menu>
+
+        {selected === 'region' &&
+          <div>
+            {this.props.countryRegion.regionList.length === 1 && (
+              <Header color='red' as='h5' textAlign='center'>No region stats available for this country</Header>
+            )}
+            <Paper className='regionTable'>
+              <MaterialTable
+                isLoading={this.props.countryRegion.isLoading}
+                options={{
+                  rowStyle: {
+                    height: '50px'
+                  },
+                  padding: 'dense',
+                  sorting: true,
+                  pageSize: 7,
+                }}
+                icons={TableIcons}
+                columns={[
+                  { title: "Province/State", field: "provinceState" },
+                  { title: "Total Cases", field: "confirmed" },
+                  { title: "Active", field: "active" },
+                  { title: "Recovered", field: "recovered" },
+                  { title: "Deaths", field: "deaths" }
+                ]}
+                data={ tableData }
+                title={"Region Stats for " + this.props.countryStats.countryText}
+              />
+            </Paper>
+          </div>
+        }
+
+        {selected === 'graph' &&
+          <div>
+            {this.props.countryHistory.error && (
+              <Header color='red' as='h5' textAlign='center'>No historical stats available for this country</Header>
+            )}
+            <Paper className="globalCasesChart">
+              {this.props.countryHistory.isLoading ? (
+                <Segment>
+                  <Dimmer active inverted >
+                    <Loader inverted>Loading</Loader>
+                  </Dimmer>
+                  <Line data={dummyData} options={options} />
+                </Segment>
+              ): (
+                <Line data={data} options={options} />
+              )}
+              
+            </Paper>
+          </div>
+        }
       </div>
     )
   }
 }
   
-const mapStateToProps = ({ covid }) => ({
+const mapStateToProps = ({ covid, global }) => ({
   countryCodes: covid.countryCodes,
   countryStats: covid.countryStats,
-  countryRegion: covid.countryRegion
+  countryRegion: covid.countryRegion,
+  countryNav: global.countryNav,
+  countryHistory: covid.countryHistory
 })
 
 const mapDispatchToProps = dispatch =>
@@ -196,7 +349,9 @@ const mapDispatchToProps = dispatch =>
     {
       getCountryCodes,
       getCountryStats,
-      getCountryRegionStats
+      getCountryRegionStats,
+      getCountryHistory,
+      updateCountryNavOption
     },
     dispatch
   )

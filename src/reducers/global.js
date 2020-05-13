@@ -1,7 +1,8 @@
 import { combineReducers } from "redux"
 import { 
     UPDATE_NAVBAR,
-    UPDATE_TABLE_PAGE
+    UPDATE_TABLE_PAGE,
+    UPDATE_COUNTRY_NAV
 } from '../actions/global'
 
 const initialStateNavbar = {
@@ -10,6 +11,10 @@ const initialStateNavbar = {
 
 const initialStateTablePage = {
     selected: 'cards'
+}
+
+const initialStateCountryNav = {
+    selected: 'region'
 }
 
 const updateNavbarReducer = (state = initialStateNavbar, action) => {
@@ -36,7 +41,20 @@ const updateTablePageReducer = (state = initialStateTablePage, action) => {
     }
 }
 
+const updateCountryNavReducer = (state = initialStateCountryNav, action) => {
+    switch (action.type) {
+        case UPDATE_COUNTRY_NAV:
+            return {
+                ...state,
+                selected: action.payload,
+            }
+        default:
+            return state
+    }
+}
+
 export default combineReducers({ 
     navbar: updateNavbarReducer,
-    tablePage: updateTablePageReducer
+    tablePage: updateTablePageReducer,
+    countryNav: updateCountryNavReducer
 })

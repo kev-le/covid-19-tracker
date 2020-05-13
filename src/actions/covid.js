@@ -30,6 +30,9 @@ export const GET_ALL_COUNTRY_REQ = 'GET_ALL_COUNTRY_REQ'
 export const GET_ALL_COUNTRY_SUCCESS  = 'GET_ALL_COUNTRY_SUCCESS'
 export const GET_ALL_COUNTRY_ERROR = 'GET_ALL_COUNTRY_ERROR'
 
+export const GET_HIST_COUNTRY_REQ = 'GET_HIST_COUNTRY_REQ'
+export const GET_HIST_COUNTRY_SUCCESS  = 'GET_HIST_COUNTRY_SUCCESS'
+export const GET_HIST_COUNTRY_ERROR = 'GET_HIST_COUNTRY_ERROR'
 
 // Get the global summary up to current day (cumalative)
 export const getGlobalSummary = () => {
@@ -177,6 +180,35 @@ export const getAllCountryStats = () => {
         }).catch(err => {
             dispatch({
                 type: GET_ALL_COUNTRY_ERROR
+            })
+        })
+    }
+}
+
+
+
+// Get the historical stats for a country
+export const getCountryHistory = (isoCode) => {
+    return dispatch => {
+        dispatch({
+            type: GET_HIST_COUNTRY_REQ
+        })
+
+        return axios.get('https://disease.sh/v2/historical/' + isoCode + '?lastdays=all').then(res => {
+            let data = res.data
+
+            let dates = Object.keys(data.timeline.cases)
+            let cases = Object.values(data.timeline.cases)
+            let recovered = Object.values(data.timeline.recovered)
+            let deaths = Object.values(data.timeline.deaths)
+
+            dispatch({
+                type: GET_HIST_COUNTRY_SUCCESS,
+                payload: { dates, cases, recovered, deaths }
+            })
+        }).catch(err => {
+            dispatch({
+                type: GET_HIST_COUNTRY_ERROR
             })
         })
     }
