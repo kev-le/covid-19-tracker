@@ -198,6 +198,7 @@ class CountryPage extends Component {
           fontColor: '#000000'
         },
         responsive: true,
+        maintainAspectRatio: false,
         animation: {
           duration: 1500,
           easing: 'easeOutQuart'
@@ -318,7 +319,7 @@ class CountryPage extends Component {
             )}
             <Paper className="globalCasesChart">
               {this.props.countryHistory.isLoading ? (
-                <Segment>
+                <Segment className='globalCasesChart'>
                   <Dimmer active inverted >
                     <Loader inverted>Loading</Loader>
                   </Dimmer>
@@ -327,7 +328,6 @@ class CountryPage extends Component {
               ): (
                 <Line data={data} options={options} />
               )}
-              
             </Paper>
           </div>
         }

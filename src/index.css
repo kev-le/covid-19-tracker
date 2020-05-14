@@ -55,7 +55,8 @@ code {
   background-color: white;
   margin: auto;
   padding: 10px;
-  min-width: 400px;
+  min-height: 400px;
+  width: auto;
   max-height: 700px;
   max-width: 800px;
   margin-top: 50px;

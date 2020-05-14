@@ -115,12 +115,13 @@ class GlobalSummaryPage extends Component {
           fontColor: '#000000'
         },
         responsive: true,
+        maintainAspectRatio: false,
         animation: {
           duration: 1500,
           easing: 'easeOutQuart'
         },
         tooltips: {
-          // Overrides the global setting
+            // Overrides the global setting
           mode: 'label'
         }
     }
@@ -162,7 +163,7 @@ class GlobalSummaryPage extends Component {
 
         <Paper className="globalCasesChart">
           {this.props.globalDaily.isLoading ? (
-            <Segment>
+            <Segment className='globalCasesChart'>
               <Dimmer active inverted >
                 <Loader inverted>Loading</Loader>
               </Dimmer>
@@ -171,8 +172,8 @@ class GlobalSummaryPage extends Component {
           ): (
             <Line data={data} options={options} />
           )}
-          
         </Paper>
+
       </div>
     )
   }
